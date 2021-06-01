@@ -30,20 +30,21 @@ if __name__=="__main__":
     """
 
     parser = OptionParser()
-    parser.add_option("-d", "--dir", action="store", type="string", dest="dir")
+    parser.add_option("--gt_dir", action="store", type="string", dest="gt_dir")
+    parser.add_option("--save_dir", action="store", type="string", dest="save_dir")
     (options, args) = parser.parse_args()
-    gt_folder = options.dir
-    bb_gt_dir = "/".join(re.split(r'/', gt_folder)[:-1]) + "/metric_est_format"
+    gt_folder = "../" + options.gt_dir
+    save_folder = "../" + options.save_dir
 
     try:
-        os.makedirs(bb_gt_dir)
+        os.makedirs(save_folder)
     except Exception as e:
         pass
 
     for filename in os.listdir(gt_folder):
         if filename.endswith(".xml"):
             bb_list = read_content(gt_folder+"/"+filename)
-            with open(bb_gt_dir+"/"+filename[:-4]+".txt", 'w') as f:
+            with open(save_folder+"/"+filename[:-4]+".txt", 'w') as f:
                 for line in bb_list:
                     prep_str = f"person {line[0]} {line[1]} {line[2]} {line[3]}\n"
                     f.write(prep_str)

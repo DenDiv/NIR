@@ -10,8 +10,10 @@ def getBoundingBoxes(gt_dir, pred_dir):
     """Read txt files containing bounding boxes (ground truth and detections)."""
     allBoundingBoxes = BoundingBoxes()
     # read ground truth
+    gt_im_names = []
     for filename in os.listdir(gt_dir):
         nameOfImage = filename.replace(".txt","")
+        gt_im_names.append(nameOfImage)
         fh1 = open(f"{gt_dir}/{filename}", "r")
         for line in fh1:
             line = line.replace("\n", "")
@@ -30,6 +32,8 @@ def getBoundingBoxes(gt_dir, pred_dir):
     # read detections
     for filename in os.listdir(pred_dir):
         nameOfImage = filename.replace(".txt", "")
+        if nameOfImage not in gt_im_names:
+            continue
         fh1 = open(f"{pred_dir}/{filename}", "r")
         for line in fh1:
             line = line.replace("\n", "")
@@ -55,14 +59,14 @@ if __name__ == "__main__":
         used library for computing metrics from this project: https://github.com/rafaelpadilla/Object-Detection-Metrics
     """
     parser = OptionParser()
-    parser.add_option("-g", "--gt", action="store", type="string", dest="gt")
-    parser.add_option("-d", "--det", action="store", type="string", dest="det")
-    parser.add_option("-n", "--name", action="store", type="string", dest="name")
+    parser.add_option("--gt", action="store", type="string", dest="gt")
+    parser.add_option("--predicted", action="store", type="string", dest="predicted")
+    parser.add_option("--name", action="store", type="string", dest="name")
     (options, args) = parser.parse_args()
     gt_file = options.gt
-    det_file = options.det
+    predicted = options.predicted
     method_name = options.name
-    bbxs = getBoundingBoxes(gt_file, det_file)
+    bbxs = getBoundingBoxes(gt_file, predicted)
     evaluator = Evaluator()
     evaluator.PlotPrecisionRecallCurve(bbxs, IOUThreshold=0.5, showAP=True, showInterpolatedPrecision=False, eval_meth_name=method_name,
-                                       savePath=f"results/real_masked_{method_name}_PR_curve_IOU_0_5.png")
+                                       savePath=f"results/AP_estimation/real_masked_{method_name}_PR_curve_IOU_0_5.png")

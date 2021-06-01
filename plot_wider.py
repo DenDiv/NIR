@@ -80,7 +80,7 @@ if __name__ == "__main__":
         fig.tight_layout()
 
 
-    fig_1.savefig("results/Easy_WIDER.pdf")
-    fig_2.savefig("results/Medium_WIDER.pdf")
-    fig_3.savefig("results/Hard_WIDER.pdf")
+    fig_1.savefig("results/AP_estimation/Easy_WIDER.pdf")
+    fig_2.savefig("results/AP_estimation/Medium_WIDER.pdf")
+    fig_3.savefig("results/AP_estimation/Hard_WIDER.pdf")
     plt.show()

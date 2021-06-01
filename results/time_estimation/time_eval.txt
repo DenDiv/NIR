@@ -1,0 +1,3 @@
+resolution alg min median max
+4k_many_faces mtcnn 2.383 3.045 7.568
+4k_one_face mtcnn 2.072 2.552 6.017
